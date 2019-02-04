@@ -1,9 +1,13 @@
 import React, { Component } from 'react';
 import { connect, DispatchProp } from 'react-redux';
+import { withStyles } from '@material-ui/core/styles';
 import { IReducer } from './models/IReducer';
 import { selectStoreInitialState, UpdateStoreStateAction } from './store/actions/StoreState.actions';
 import { Dispatch } from 'redux';
 import { IStore } from './models/IStore';
+
+import Content from './components/Content';
+import Navbar from './components/Navbar';
 
 interface AppComponentProps extends React.Props<DispatchProp> {
   initialState: any;
@@ -17,8 +21,9 @@ class AppComponent extends Component<AppComponentProps> {
 
   render() {
     return (
-      <div>
-        {1 + 2}
+      <div className="f c">
+        <Navbar />
+        <Content />
       </div>
     );
   }
@@ -38,4 +43,4 @@ function mapDispatch(dispatch: Dispatch) {
 
 const App = connect(mapState, mapDispatch)(AppComponent);
 
-export default App;
+export default withStyles({})(App);

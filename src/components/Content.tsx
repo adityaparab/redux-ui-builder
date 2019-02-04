@@ -5,7 +5,7 @@ import { connect, DispatchProp } from 'react-redux';
 import { IReducer } from '../models/IReducer';
 
 const Home = () => <div>Home</div>;
-const Test = () => <div>Test</div>;
+const Overview = () => <div>Overview</div>;
 
 interface ContentComponentProps extends RouteComponentProps<any>, DispatchProp, React.Props<any> {
     state: any;
@@ -19,7 +19,7 @@ class ContentComponent extends React.Component<ContentComponentProps> {
                 <Link to="/">Home</Link>
                 <Link to="/test">Test</Link>
                 <Route exact path="/" component={Home} />
-                <Route exact path="/test" component={Test} />
+                <Route exact path="/overview" component={Overview} />
             </div>
         )
     }

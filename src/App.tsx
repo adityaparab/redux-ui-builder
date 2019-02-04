@@ -1,28 +1,41 @@
 import React, { Component } from 'react';
-import logo from './logo.svg';
-import './App.css';
+import { connect, DispatchProp } from 'react-redux';
+import { IReducer } from './models/IReducer';
+import { selectStoreInitialState, UpdateStoreStateAction } from './store/actions/StoreState.actions';
+import { Dispatch } from 'redux';
+import { IStore } from './models/IStore';
 
-class App extends Component {
+interface AppComponentProps extends React.Props<DispatchProp> {
+  initialState: any;
+  setInitialStoreState: (storeState: IStore) => void;
+}
+
+class AppComponent extends Component<AppComponentProps> {
+  constructor(props: any) {
+    super(props);
+  }
+
   render() {
     return (
-      <div className="App">
-        <header className="App-header">
-          <img src={logo} className="App-logo" alt="logo" />
-          <p>
-            Edit <code>src/App.tsx</code> and save to reload.
-          </p>
-          <a
-            className="App-link"
-            href="https://reactjs.org"
-            target="_blank"
-            rel="noopener noreferrer"
-          >
-            Learn React
-          </a>
-        </header>
+      <div>
+        {1 + 2}
       </div>
     );
   }
 }
+
+function mapState(state: IReducer) {
+  return {
+    initialState: selectStoreInitialState(state)
+  }
+}
+
+function mapDispatch(dispatch: Dispatch) {
+  return {
+    setInitialStoreState: (storeState: IStore) => dispatch(UpdateStoreStateAction(storeState))
+  }
+}
+
+const App = connect(mapState, mapDispatch)(AppComponent);
 
 export default App;

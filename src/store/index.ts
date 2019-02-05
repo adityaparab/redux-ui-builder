@@ -1,15 +1,20 @@
-import { combineReducers, createStore, Reducer } from 'redux';
-import { routerReducer } from 'react-router-redux';
+import { routerMiddleware } from 'connected-react-router';
+import { createBrowserHistory } from 'history';
+import { applyMiddleware, compose, createStore } from 'redux';
+import { ReducerConfiguration } from './reducers';
+import { IReducerInitialValue } from '../models/IReducer';
 
-import { IReducer } from '../models/IReducer';
-import { StoreStateReducer } from './reducers/StoreState.reducer';
-
-const reducers: Reducer<IReducer> = combineReducers({
-    routing: routerReducer,
-    storeState: StoreStateReducer
-});
+export const history = createBrowserHistory();
 
 export function configureStore() {
-    const store = createStore(reducers);
+    const store = createStore(
+        ReducerConfiguration(history),
+        IReducerInitialValue,
+        compose(
+            applyMiddleware(
+                routerMiddleware(history)
+            )
+        )
+    );
     return store;
 };

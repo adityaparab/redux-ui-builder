@@ -2,11 +2,11 @@ import React from 'react';
 import ReactDOM from 'react-dom';
 import { Provider } from 'react-redux';
 import * as serviceWorker from './serviceWorker';
-import { BrowserRouter } from 'react-router-dom';
+import { ConnectedRouter } from 'connected-react-router';
 
 import { createStyles, withStyles } from '@material-ui/core/styles';
 
-import { configureStore } from './store';
+import { configureStore, history } from './store';
 
 import App from './App';
 
@@ -25,12 +25,13 @@ const baseStyles = createStyles({
     }
 });
 
-const baseWrapper = () =>
-    (<Provider store={store}>
-        <BrowserRouter>
+const baseWrapper = () => (
+    <Provider store={store}>
+        <ConnectedRouter history={history}>
             <App />
-        </BrowserRouter>
-    </Provider>);
+        </ConnectedRouter>
+    </Provider>
+);
 
 const Base = withStyles(baseStyles)(baseWrapper);
 

@@ -22,10 +22,10 @@
     "typescript": "3.3.1"
   },
   "scripts": {
-    "start": "react-scripts start",
-    "build": "react-scripts build",
-    "test": "react-scripts test",
-    "eject": "react-scripts eject"
+    "start": "react-app-rewired start",
+    "build": "react-app-rewired build",
+    "test": "react-app-rewired test",
+    "eject": "react-app-rewired eject"
   },
   "eslintConfig": {
     "extends": "react-app"
@@ -40,6 +40,8 @@
     "@types/react-redux": "^7.0.1",
     "@types/react-router-dom": "^4.3.1",
     "@types/react-router-redux": "^5.0.17",
-    "@types/redux": "^3.6.0"
+    "@types/redux": "^3.6.0",
+    "monaco-editor-webpack-plugin": "^1.7.0",
+    "react-app-rewired": "^2.0.3"
   }
 }

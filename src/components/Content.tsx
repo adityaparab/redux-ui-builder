@@ -6,8 +6,7 @@ import { IReducer } from '../models/IReducer';
 import { selectStoreInitialState } from '../store/actions/StoreState.actions';
 
 import CreateNewProject from './CreateNewProject';
-
-const Overview = () => <div>Overview</div>;
+import ConfigureStore from './ConfigureStore';
 
 interface ContentComponentProps extends RouteComponentProps<any>, DispatchProp {
     intialState: any;
@@ -19,7 +18,7 @@ class ContentComponent extends React.Component<ContentComponentProps> {
             <div className="f c">
                 <Switch>
                     <Route exact path="/" component={CreateNewProject} />
-                    <Route exact path="/overview" component={Overview} />
+                    <Route exact path="/configure-store" component={ConfigureStore} />
                 </Switch>
             </div>
         )

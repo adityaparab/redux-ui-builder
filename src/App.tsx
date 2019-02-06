@@ -7,8 +7,8 @@ import { Dispatch } from 'redux';
 import { IStore } from './models/IStore';
 
 import Content from './components/Content';
+import Footer from './components/Footer';
 import Navbar from './components/Navbar';
-import MonacoEditor from './components/MonacoEditor';
 
 interface AppComponentProps extends React.Props<DispatchProp> {
   initialState: any;
@@ -23,9 +23,9 @@ class AppComponent extends Component<AppComponentProps> {
   render() {
     return (
       <div className="f c">
-        {/* <Navbar />
-        <Content /> */}
-        <MonacoEditor value='{"todos": []}' language="json" />
+        <Navbar />
+        <Content />
+        <Footer />
       </div>
     );
   }

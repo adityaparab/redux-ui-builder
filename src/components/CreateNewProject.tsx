@@ -4,9 +4,14 @@ import { connect, DispatchProp } from 'react-redux';
 
 import { createStyles, withStyles } from '@material-ui/core/styles';
 
+import Fab from '@material-ui/core/Fab';
+import FormControl from '@material-ui/core/FormControl';
 import FormGroup from '@material-ui/core/FormGroup';
 import Paper from '@material-ui/core/Paper';
 import Typography from '@material-ui/core/Typography';
+
+import ClearIcon from '@material-ui/icons/Clear';
+import SaveIcon from '@material-ui/icons/Save';
 
 import InputField from './InputField';
 
@@ -26,6 +31,17 @@ const styles = createStyles({
     },
     margin10: {
         margin: '0 10px'
+    },
+    button: {
+        margin: '0 10px',
+        width: '50%'
+    },
+    icon: {
+        margin: '0 5px'
+    },
+    buttons: {
+        flexDirection: 'row',
+        margin: '10px 0'
     }
 });
 
@@ -37,6 +53,11 @@ interface CreateNewProjectProps extends RouteComponentProps, DispatchProp {
 
 function CreateNewProject(props: CreateNewProjectProps) {
     const { classes, state } = props;
+    console.log(props);
+    function startStoreConfiguration() {
+        props.history.push('/configure-store');
+    }
+
     return (
         <div className={['f', 'c', classes.jcc].join(' ')}>
             <Paper className={[classes.padded5, classes.formContainer].join(' ')} elevation={5}>
@@ -47,6 +68,16 @@ function CreateNewProject(props: CreateNewProjectProps) {
                             (pc: ProjectFormFieldConfig) => <InputField key={pc.id} {...pc} value={pc.valueSelector(state)} />
                         )
                     }
+                    <FormControl className={classes.buttons}>
+                        <Fab variant="extended" color="primary" aria-label="Create" className={classes.button} onClick={startStoreConfiguration}>
+                            <SaveIcon className={classes.icon} />
+                            Create
+                        </Fab>
+                        <Fab variant="extended" color="secondary" aria-label="Cancel" className={classes.button}>
+                            <ClearIcon className={classes.icon} />
+                            Cancel
+                        </Fab>
+                    </FormControl>
                 </FormGroup>
             </Paper>
             <hr />

@@ -1,0 +1,160 @@
+import * as React from 'react';
+import { createStyles, withStyles } from '@material-ui/core/styles';
+
+import Button from '@material-ui/core/Button';
+import Step from '@material-ui/core/Step';
+import StepLabel from '@material-ui/core/StepLabel';
+import Stepper from '@material-ui/core/Stepper';
+import Typography from '@material-ui/core/Typography';
+
+import MonacoEditor from './MonacoEditor';
+
+const styles = createStyles({
+    footerButton: {
+        margin: '0 10px;'
+    },
+    buttons: {
+        borderTop: '1px solid #bdbdbd',
+        height: '55px',
+        display: 'flex',
+        flexDirection: 'row-reverse',
+        alignItems: 'center'
+    },
+    stepper: {
+        borderBottom: '1px solid #bdbdbd'
+    },
+    component: {
+        padding: '10px'
+    }
+});
+
+const ConfigureState = () => <h5>This is Configure State Step</h5>;
+const ConfigureReducers = () => <h5>This is Configure Reducers Step</h5>;
+const ConfigureActions = () => <h5>This is Configure Actions Step</h5>;
+
+interface IStep {
+    title: string;
+    component: any;
+    id: number;
+    key: string;
+}
+
+const steps: IStep[] = [
+    {
+        title: 'Configure State',
+        component: MonacoEditor,
+        id: 1,
+        key: 'configure-store-1'
+    },
+    {
+        title: 'Configure Reducers',
+        component: ConfigureReducers,
+        id: 2,
+        key: 'configure-reducers-2'
+    },
+    {
+        title: 'Configure Actions',
+        component: ConfigureActions,
+        id: 3,
+        key: 'configure-actions-3'
+    }
+];
+
+const findIndex: (id: number) => number = (id: number) => steps.findIndex((s: IStep) => s.id === id);
+const isFirstStep: (id: number) => boolean = (id: number): boolean => findIndex(id) === 0;
+const isLastStep: (id: number) => boolean = (id: number): boolean => (findIndex(id) === (steps.length - 1));
+const isCompleted: (id: number, activeStep: IStep) => boolean = (id: number, activeStep: IStep): boolean => {
+    const currentIndex = findIndex(id);
+    const activeIndex = findIndex(activeStep.id);
+    return currentIndex < activeIndex;
+
+}
+
+interface ConfigureStoreProps extends React.Props<any> {
+    classes: any;
+}
+
+interface ConfigureStoreState {
+    currentStep: IStep;
+}
+
+class ConfigureStore extends React.Component<ConfigureStoreProps, ConfigureStoreState> {
+
+    constructor(props: ConfigureStoreProps) {
+        super(props);
+        this.state = {
+            currentStep: steps[0]
+        };
+        this.handleNext = this.handleNext.bind(this);
+        this.handlePrev = this.handlePrev.bind(this);
+        this.handleDone = this.handleDone.bind(this);
+    }
+
+    handlePrev() {
+        const currentIndex = findIndex(this.state.currentStep.id);
+        const prevStep = steps.find((s: IStep) => findIndex(s.id) === currentIndex - 1);
+
+        if (prevStep) {
+            this.setState({
+                currentStep: prevStep
+            });
+        }
+    }
+
+    handleNext() {
+        const currentIndex = findIndex(this.state.currentStep.id);
+        const nextStep = steps.find((s: IStep) => findIndex(s.id) === currentIndex + 1);
+
+        if (nextStep) {
+            this.setState({
+                currentStep: nextStep
+            });
+        }
+    }
+
+    handleDone() {
+        console.log('Done... Should Navigate to Configure Components Section');
+    }
+
+    render() {
+        const { id } = this.state.currentStep;
+        const activeStep = findIndex(id);
+        const { classes } = this.props;
+        return (
+            <div className="f c">
+                <div className={classes.stepper}>
+                    <Stepper activeStep={activeStep}>
+                        {
+                            steps.map((s: IStep) => {
+                                const props = {
+                                    completed: isCompleted(s.id, this.state.currentStep)
+                                };
+                                const labelProps = {
+                                    optional: (<Typography variant="caption">Required</Typography>)
+                                };
+                                return (
+                                    <Step key={s.key} {...props}>
+                                        <StepLabel {...labelProps}>{s.title}</StepLabel>
+                                    </Step>
+                                )
+                            })
+                        }
+                    </Stepper>
+                </div>
+                <div className={["f c", classes.component].join(' ')}>
+                    {
+                        <this.state.currentStep.component />
+                    }
+                </div>
+                <div className={classes.buttons}>
+                    <Button disabled={!isLastStep(id)} className={classes.footerButton} variant="contained" color="primary" onClick={this.handleDone}>Configure Components</Button>
+                    <Button disabled={[steps.length - 1].includes(activeStep)} className={classes.footerButton} variant="contained" color="primary" onClick={this.handleNext}>Next</Button>
+                    <Button disabled={isFirstStep(id)} className={classes.footerButton} variant="contained" color="primary" onClick={this.handlePrev}>Previous</Button>
+                </div>
+            </div>
+
+        );
+    }
+}
+
+export default withStyles(styles)(ConfigureStore);

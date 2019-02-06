@@ -25,7 +25,9 @@
     "start": "react-app-rewired start",
     "build": "react-app-rewired build",
     "test": "react-app-rewired test",
-    "eject": "react-app-rewired eject"
+    "eject": "react-app-rewired eject",
+    "predeploy": "yarn build",
+    "deploy": "gh-pages -d build"
   },
   "eslintConfig": {
     "extends": "react-app"
@@ -41,6 +43,7 @@
     "@types/react-router-dom": "^4.3.1",
     "@types/react-router-redux": "^5.0.17",
     "@types/redux": "^3.6.0",
+    "gh-pages": "^2.0.1",
     "monaco-editor-webpack-plugin": "^1.7.0",
     "react-app-rewired": "^2.0.3"
   }

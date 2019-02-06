@@ -1,4 +1,6 @@
 import * as React from 'react';
+import { connect, DispatchProp } from 'react-redux';
+
 import { createStyles, withStyles } from '@material-ui/core/styles';
 
 import Button from '@material-ui/core/Button';
@@ -7,7 +9,14 @@ import StepLabel from '@material-ui/core/StepLabel';
 import Stepper from '@material-ui/core/Stepper';
 import Typography from '@material-ui/core/Typography';
 
+import CheckIcon from '@material-ui/icons/Check';
+import ClearIcon from '@material-ui/icons/Clear';
+import KeyboardArrowLeftIcon from '@material-ui/icons/KeyboardArrowLeft';
+import KeyboardArrowRightIcon from '@material-ui/icons/KeyboardArrowRight';
+
+
 import MonacoEditor from './MonacoEditor';
+import { RouteComponentProps } from 'react-router';
 
 const styles = createStyles({
     footerButton: {
@@ -25,10 +34,23 @@ const styles = createStyles({
     },
     component: {
         padding: '10px'
+    },
+    abandon: {
+        alignSelf: 'flex-end'
+    },
+    icon: {
+        margin: '0 5px',
+        marginLeft: '-7px'
+    },
+    iconR: {
+        marginLeft: '4px'
+    },
+    spacer: {
+        display: 'flex',
+        flex: 1
     }
 });
 
-const ConfigureState = () => <h5>This is Configure State Step</h5>;
 const ConfigureReducers = () => <h5>This is Configure Reducers Step</h5>;
 const ConfigureActions = () => <h5>This is Configure Actions Step</h5>;
 
@@ -70,7 +92,7 @@ const isCompleted: (id: number, activeStep: IStep) => boolean = (id: number, act
 
 }
 
-interface ConfigureStoreProps extends React.Props<any> {
+interface ConfigureStoreProps extends React.Props<any>, RouteComponentProps, DispatchProp {
     classes: any;
 }
 
@@ -88,6 +110,7 @@ class ConfigureStore extends React.Component<ConfigureStoreProps, ConfigureStore
         this.handleNext = this.handleNext.bind(this);
         this.handlePrev = this.handlePrev.bind(this);
         this.handleDone = this.handleDone.bind(this);
+        this.handleDiscard = this.handleDiscard.bind(this);
     }
 
     handlePrev() {
@@ -114,6 +137,10 @@ class ConfigureStore extends React.Component<ConfigureStoreProps, ConfigureStore
 
     handleDone() {
         console.log('Done... Should Navigate to Configure Components Section');
+    }
+
+    handleDiscard() {
+        this.props.history.push('/');
     }
 
     render() {
@@ -147,9 +174,26 @@ class ConfigureStore extends React.Component<ConfigureStoreProps, ConfigureStore
                     }
                 </div>
                 <div className={classes.buttons}>
-                    <Button disabled={!isLastStep(id)} className={classes.footerButton} variant="contained" color="primary" onClick={this.handleDone}>Configure Components</Button>
-                    <Button disabled={[steps.length - 1].includes(activeStep)} className={classes.footerButton} variant="contained" color="primary" onClick={this.handleNext}>Next</Button>
-                    <Button disabled={isFirstStep(id)} className={classes.footerButton} variant="contained" color="primary" onClick={this.handlePrev}>Previous</Button>
+                    <Button disabled={!isLastStep(id)} className={classes.footerButton} variant="contained" color="primary" onClick={this.handleDone}>
+                        Configure Components
+                        <CheckIcon className={classes.iconR} />
+                    </Button>
+
+                    <Button disabled={[steps.length - 1].includes(activeStep)} className={classes.footerButton} variant="contained" color="primary" onClick={this.handleNext}>
+                        Next
+                        <KeyboardArrowRightIcon className={classes.iconR} />
+                    </Button>
+                    
+                    <Button disabled={isFirstStep(id)} className={classes.footerButton} variant="contained" color="secondary" onClick={this.handlePrev}>
+                        <KeyboardArrowLeftIcon className={classes.icon} />
+                        Previous
+                    </Button>
+                    <span className={classes.spacer}></span>
+                    
+                    <Button className={classes.footerButton} variant="contained" color="secondary" onClick={this.handleDiscard}>
+                        <ClearIcon className={classes.icon} />
+                        Discard
+                    </Button>
                 </div>
             </div>
 
@@ -157,4 +201,4 @@ class ConfigureStore extends React.Component<ConfigureStoreProps, ConfigureStore
     }
 }
 
-export default withStyles(styles)(ConfigureStore);
+export default withStyles(styles)(connect()(ConfigureStore));

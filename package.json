@@ -1,5 +1,6 @@
 {
-  "name": "redux-app-generator",
+  "name": "redux-ui-builder",
+  "homepage" : "http://adityaparab.github.io/redux-ui-builder",
   "version": "0.1.0",
   "private": true,
   "dependencies": {

@@ -1,6 +1,6 @@
 import * as React from 'react';
 import { Route, RouteComponentProps } from 'react-router';
-import { Link, Switch, withRouter } from 'react-router-dom';
+import { Switch, withRouter } from 'react-router-dom';
 import { connect, DispatchProp } from 'react-redux';
 import { IReducer } from '../models/IReducer';
 import { selectStoreInitialState } from '../store/actions/StoreState.actions';

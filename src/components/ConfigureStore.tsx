@@ -1,5 +1,5 @@
 import * as React from 'react';
-import { connect, DispatchProp } from 'react-redux';
+import { connect } from 'react-redux';
 
 import { createStyles, withStyles } from '@material-ui/core/styles';
 
@@ -15,8 +15,11 @@ import KeyboardArrowLeftIcon from '@material-ui/icons/KeyboardArrowLeft';
 import KeyboardArrowRightIcon from '@material-ui/icons/KeyboardArrowRight';
 
 
-import MonacoEditor from './MonacoEditor';
-import { RouteComponentProps } from 'react-router';
+import StoreStateConfig from './StoreStateConfig';
+import { IStyledConnectedComponent } from '../models/IStyledConnectedComponent';
+import { IReducer } from '../models/IReducer';
+import { selectStoreIsValid } from '../store/actions/StoreState.actions';
+import { Tooltip } from '@material-ui/core';
 
 const styles = createStyles({
     footerButton: {
@@ -64,7 +67,7 @@ interface IStep {
 const steps: IStep[] = [
     {
         title: 'Configure State',
-        component: MonacoEditor,
+        component: StoreStateConfig,
         id: 1,
         key: 'configure-store-1'
     },
@@ -89,11 +92,10 @@ const isCompleted: (id: number, activeStep: IStep) => boolean = (id: number, act
     const currentIndex = findIndex(id);
     const activeIndex = findIndex(activeStep.id);
     return currentIndex < activeIndex;
-
 }
 
-interface ConfigureStoreProps extends React.Props<any>, RouteComponentProps, DispatchProp {
-    classes: any;
+interface ConfigureStoreProps extends IStyledConnectedComponent {
+    isValid: boolean;
 }
 
 interface ConfigureStoreState {
@@ -146,7 +148,7 @@ class ConfigureStore extends React.Component<ConfigureStoreProps, ConfigureStore
     render() {
         const { id } = this.state.currentStep;
         const activeStep = findIndex(id);
-        const { classes } = this.props;
+        const { classes = {} } = this.props;
         return (
             <div className="f c">
                 <div className={classes.stepper}>
@@ -179,17 +181,27 @@ class ConfigureStore extends React.Component<ConfigureStoreProps, ConfigureStore
                         <CheckIcon className={classes.iconR} />
                     </Button>
 
-                    <Button disabled={[steps.length - 1].includes(activeStep)} className={classes.footerButton} variant="contained" color="primary" onClick={this.handleNext}>
+                    {this.props.isValid && <Button disabled={[steps.length - 1].includes(activeStep)} className={classes.footerButton} variant="contained" color="primary" onClick={this.handleNext}>
                         Next
                         <KeyboardArrowRightIcon className={classes.iconR} />
-                    </Button>
-                    
+                    </Button>}
+
+                    {
+                        !this.props.isValid &&
+                        <Tooltip title="Invalid JSON. Please fix the JSON in the editor before continuing" placement="top">
+                            <Button className={classes.footerButton} variant="contained">
+                                Next
+                                <KeyboardArrowRightIcon className={classes.iconR} />
+                            </Button>
+                        </Tooltip>
+                    }
+
                     <Button disabled={isFirstStep(id)} className={classes.footerButton} variant="contained" color="secondary" onClick={this.handlePrev}>
                         <KeyboardArrowLeftIcon className={classes.icon} />
                         Previous
                     </Button>
                     <span className={classes.spacer}></span>
-                    
+
                     <Button className={classes.footerButton} variant="contained" color="secondary" onClick={this.handleDiscard}>
                         <ClearIcon className={classes.icon} />
                         Discard
@@ -201,4 +213,10 @@ class ConfigureStore extends React.Component<ConfigureStoreProps, ConfigureStore
     }
 }
 
-export default withStyles(styles)(connect()(ConfigureStore));
+function mapState(state: IReducer) {
+    return {
+        isValid: selectStoreIsValid(state)
+    }
+}
+
+export default withStyles(styles)(connect(mapState)(ConfigureStore));

@@ -18,7 +18,6 @@ interface AppComponentProps extends React.Props<DispatchProp> {
 class AppComponent extends Component<AppComponentProps> {
   constructor(props: any) {
     super(props);
-    console.log('One last attempt at gh-pages deployment');
   }
 
   render() {

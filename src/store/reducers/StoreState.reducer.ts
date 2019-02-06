@@ -8,9 +8,16 @@ export const StoreStateReducer: Reducer<IStore> = (
 ): IStore => {
     switch (action.type) {
         case StoreStateActions.STORE_STATE_ACTIONS.RESET_STORE:
-            return { ...state, initialValue: {} };
+            return { ...state, initialValue: "{}", isValid: true };
         case StoreStateActions.STORE_STATE_ACTIONS.UPDATE_STORE:
-            return { ...state, initialValue: action.payload };
+            let isValid = true;
+            try {
+                JSON.parse(action.payload);
+                isValid = true;
+            } catch (e) {
+                isValid = false
+            }
+            return { ...state, initialValue: action.payload, isValid };
         default:
             return { ...state };
     }

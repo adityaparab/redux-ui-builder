@@ -5,18 +5,21 @@ import { Dispatch } from 'redux';
 
 import { createStyles, withStyles } from '@material-ui/core/styles';
 import { IReducer } from '../models/IReducer';
-import { selectStoreInitialState, UpdateStoreStateAction, IStoreStateAction } from '../store/actions/StoreState.actions';
+import { selectStoreInitialState, UpdateStoreStateAction, IStoreStateAction, selectStoreState } from '../store/actions/StoreState.actions';
 
 import { IStore } from '../models/IStore';
 import { IStyledConnectedComponent } from '../models/IStyledConnectedComponent';
 
 import MonacoEditor from './MonacoEditor';
+import { IValidState } from '../models/IValidState';
+import { createActions } from '../code-generation/ActionCreator';
 
 const styles = createStyles({});
 
 interface StoreStateConfigProps extends IStyledConnectedComponent {
     value: string;
     valueUpdated: (value: string) => IStoreStateAction;
+    currentState: IValidState
 }
 
 class StoreStateConfig extends React.Component<StoreStateConfigProps> {
@@ -30,18 +33,24 @@ class StoreStateConfig extends React.Component<StoreStateConfigProps> {
         this.props.valueUpdated(value);
     }
 
+    componentDidMount() {
+        // createActions(this.props.currentState.models[0]);
+    }
+
     onMonacoEditorMounted() { }
 
     render() {
+        createActions(this.props.currentState.models[0]);
         return (
-            <MonacoEditor onEditorChange={this.props.valueUpdated} onEditorMount={this.onMonacoEditorMounted} value={this.props.value}/>
+            <MonacoEditor onEditorChange={this.props.valueUpdated} onEditorMount={this.onMonacoEditorMounted} value={this.props.value} />
         );
     }
 }
 
 function mapState(state: IReducer) {
     return {
-        value: selectStoreInitialState(state)
+        value: selectStoreInitialState(state),
+        currentState: selectStoreState(state)
     }
 }
 

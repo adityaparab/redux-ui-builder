@@ -16,6 +16,8 @@ import KeyboardArrowRightIcon from '@material-ui/icons/KeyboardArrowRight';
 
 
 import StoreStateConfig from './StoreStateConfig';
+import StoreActionsConfig from './StoreActionsConfig';
+
 import { IStyledConnectedComponent } from '../models/IStyledConnectedComponent';
 import { IReducer } from '../models/IReducer';
 import { selectStoreIsValid } from '../store/actions/StoreState.actions';
@@ -55,7 +57,6 @@ const styles = createStyles({
 });
 
 const ConfigureReducers = () => <h5>This is Configure Reducers Step</h5>;
-const ConfigureActions = () => <h5>This is Configure Actions Step</h5>;
 
 interface IStep {
     title: string;
@@ -72,16 +73,16 @@ const steps: IStep[] = [
         key: 'configure-store-1'
     },
     {
-        title: 'Configure Reducers',
-        component: ConfigureReducers,
+        title: 'Configure Actions',
+        component: StoreActionsConfig,
         id: 2,
-        key: 'configure-reducers-2'
+        key: 'configure-actions-3'
     },
     {
-        title: 'Configure Actions',
-        component: ConfigureActions,
+        title: 'Configure Reducers',
+        component: ConfigureReducers,
         id: 3,
-        key: 'configure-actions-3'
+        key: 'configure-reducers-2'
     }
 ];
 

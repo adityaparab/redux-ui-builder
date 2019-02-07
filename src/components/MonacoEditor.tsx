@@ -30,7 +30,6 @@ class MonacoEditor extends React.Component<MonacoEditorProps> {
     }
 
     componentDidMount() {
-        console.log(this.props);
         this._editor = monaco.editor.create(this.textAreaRef.current as HTMLElement, { ...defaultOptions, ...this.props });
         if (this.props.onEditorChange) {
             this._editor.onDidChangeModelContent(() => {

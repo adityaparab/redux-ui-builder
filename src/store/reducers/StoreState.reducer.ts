@@ -8,7 +8,7 @@ export const StoreStateReducer: Reducer<IStore> = (
 ): IStore => {
     switch (action.type) {
         case StoreStateActions.STORE_STATE_ACTIONS.RESET_STORE:
-            return { ...state, initialValue: "{}", isValid: true };
+            return { ...state, initialValue: '{\n\t"models": [],\n\t"state": []\n}', isValid: true };
         case StoreStateActions.STORE_STATE_ACTIONS.UPDATE_STORE:
             let isValid = true;
             try {

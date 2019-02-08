@@ -5,7 +5,7 @@ import { Dispatch } from 'redux';
 
 import { createStyles, withStyles } from '@material-ui/core/styles';
 import { IReducer } from '../models/IReducer';
-import { selectStoreInitialState, UpdateStoreStateAction, IStoreStateAction, selectStoreState } from '../store/actions/StoreState.actions';
+import { selectStoreInitialState, UpdateStoreStateAction, IStoreStateAction, selectStoreState, selectStoreIsValid } from '../store/actions/StoreState.actions';
 
 import { IStore } from '../models/IStore';
 import { IStyledConnectedComponent } from '../models/IStyledConnectedComponent';
@@ -19,7 +19,8 @@ const styles = createStyles({});
 interface StoreStateConfigProps extends IStyledConnectedComponent {
     value: string;
     valueUpdated: (value: string) => IStoreStateAction;
-    currentState: IValidState
+    currentState: IValidState;
+    isValid: boolean;
 }
 
 class StoreStateConfig extends React.Component<StoreStateConfigProps> {
@@ -34,13 +35,14 @@ class StoreStateConfig extends React.Component<StoreStateConfigProps> {
     }
 
     componentDidMount() {
-        // createActions(this.props.currentState.models[0]);
     }
 
     onMonacoEditorMounted() { }
 
     render() {
-        createActions(this.props.currentState.models[0]);
+        if (this.props.isValid) {
+            createActions(this.props.currentState.models[0]);
+        }
         return (
             <MonacoEditor onEditorChange={this.props.valueUpdated} onEditorMount={this.onMonacoEditorMounted} value={this.props.value} />
         );
@@ -50,7 +52,8 @@ class StoreStateConfig extends React.Component<StoreStateConfigProps> {
 function mapState(state: IReducer) {
     return {
         value: selectStoreInitialState(state),
-        currentState: selectStoreState(state)
+        currentState: selectStoreState(state),
+        isValid: selectStoreIsValid(state)
     }
 }
 

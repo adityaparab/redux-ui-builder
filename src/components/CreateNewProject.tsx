@@ -53,7 +53,7 @@ interface CreateNewProjectProps extends RouteComponentProps, DispatchProp {
 
 function CreateNewProject(props: CreateNewProjectProps) {
     const { classes, state } = props;
-    console.log(props);
+
     function startStoreConfiguration() {
         props.history.push('/configure-store');
     }

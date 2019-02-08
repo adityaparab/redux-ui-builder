@@ -36,7 +36,6 @@ class MonacoEditor extends React.Component<MonacoEditorProps> {
                 this.props.onEditorChange(this._editor.getValue());
             })
         }
-        this._editor.trigger(monaco.KeyMod.Alt + monaco.KeyMod.Shift + monaco.KeyCode.KEY_F);
     }
 
     render() {

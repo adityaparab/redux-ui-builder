@@ -41,7 +41,7 @@ class StoreStateConfig extends React.Component<StoreStateConfigProps> {
 
     render() {
         if (this.props.isValid) {
-            createActions(this.props.currentState.models[0]);
+            createActions(this.props.currentState.models);
         }
         return (
             <MonacoEditor onEditorChange={this.props.valueUpdated} onEditorMount={this.onMonacoEditorMounted} value={this.props.value} />

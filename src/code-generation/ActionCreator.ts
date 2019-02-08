@@ -32,17 +32,19 @@ function generateActionId(op: string, name: string) {
     return [op, name, 'Action'].join('-').toUpperCase();
 }
 
-function generateActionsFileConfig(model: IModel, output: any) {
-    const name = model.name.toLowerCase();
+function generateFileFileConfig(model: IModel, type: string, output: any) {
+    const name = model.name.toLowerCase(),
+        NAME = model.name.toUpperCase(),
+        fileName = `${NAME}.${type}`,
+        filePath = `actions/${fileName}`;
+
+
     return {
-        ...output, ...{
-            NAME: name.toUpperCase(),
-            name,
-            actionsFileName: name + '.actions',
-            constantsFileName: `${name}.constants`,
-            reducerFileName: `${name}.reducer`
-        }
-    }
+        name,
+        NAME,
+        fileName,
+        filePath
+    };
 }
 
 function generateActionFunctionConfig(options: any) {
@@ -92,22 +94,24 @@ function assignTypesToActions(options: any) {
     }
 }
 
-export function createActions(model: IModel) {
-    let options = generateActionsFileConfig(model, {});
-    options = generateActionFunctionConfig(options);
-    options = generateActionConstants(options);
+export function createActions(models: IModel[]) {
 
-    options = assignTypesToActions(options);
+    const output = models.map((model: IModel) => {
+        // let options = generateActionsFileConfig(model, {});
+        // options = generateActionFunctionConfig(options);
+        // options = generateActionConstants(options);
 
-    const actionsCode = render(actionsFileTemplate, { options });
-    const constantsCode = render(constantsFileTemplate, { options });
+        // options = assignTypesToActions(options);
 
-    console.log(constantsCode);
-    console.log(actionsCode);
+        // const actionsCode = render(actionsFileTemplate, { options });
+        // const constantsCode = render(constantsFileTemplate, { options });
 
-    return {
-        actionsCode,
-        constantsCode
-    };
+        // console.log(constantsCode);
+        // console.log(actionsCode);
+
+        return {};
+    });
+
+    console.log(output);
 
 }

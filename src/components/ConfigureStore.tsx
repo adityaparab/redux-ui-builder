@@ -9,6 +9,9 @@ import StepLabel from '@material-ui/core/StepLabel';
 import Stepper from '@material-ui/core/Stepper';
 import Typography from '@material-ui/core/Typography';
 
+import Tabs from '@material-ui/core/Tabs';
+import Tab from '@material-ui/core/Tab';
+
 import CheckIcon from '@material-ui/icons/Check';
 import ClearIcon from '@material-ui/icons/Clear';
 import KeyboardArrowLeftIcon from '@material-ui/icons/KeyboardArrowLeft';
@@ -53,6 +56,9 @@ const styles = createStyles({
     spacer: {
         display: 'flex',
         flex: 1
+    },
+    lc: {
+        textTransform: 'lowercase'
     }
 });
 
@@ -114,6 +120,7 @@ class ConfigureStore extends React.Component<ConfigureStoreProps, ConfigureStore
         this.handlePrev = this.handlePrev.bind(this);
         this.handleDone = this.handleDone.bind(this);
         this.handleDiscard = this.handleDiscard.bind(this);
+        this.handleTabChange = this.handleTabChange.bind(this);
     }
 
     handlePrev() {
@@ -126,6 +133,8 @@ class ConfigureStore extends React.Component<ConfigureStoreProps, ConfigureStore
             });
         }
     }
+
+    handleTabChange() { }
 
     handleNext() {
         const currentIndex = findIndex(this.state.currentStep.id);
@@ -152,7 +161,7 @@ class ConfigureStore extends React.Component<ConfigureStoreProps, ConfigureStore
         const { classes = {} } = this.props;
         return (
             <div className="f c">
-                <div className={classes.stepper}>
+                {/* <div className={classes.stepper}>
                     <Stepper activeStep={activeStep}>
                         {
                             steps.map((s: IStep) => {
@@ -170,13 +179,21 @@ class ConfigureStore extends React.Component<ConfigureStoreProps, ConfigureStore
                             })
                         }
                     </Stepper>
+                </div> */}
+                <div>
+                    <Tabs value={activeStep} onChange={this.handleTabChange} >
+                        <Tab value={0} label="state.js" className={classes.lc}/>
+                        <Tab value={1} label="constant.js" className={classes.lc}/>
+                        <Tab value={2} label="actions.js" className={classes.lc}/>
+                        <Tab value={3} label="reducer.js" className={classes.lc} />
+                    </Tabs>
                 </div>
                 <div className={["f c", classes.component].join(' ')}>
                     {
                         <this.state.currentStep.component />
                     }
                 </div>
-                <div className={classes.buttons}>
+                {/* <div className={classes.buttons}>
                     <Button disabled={!isLastStep(id)} className={classes.footerButton} variant="contained" color="primary" onClick={this.handleDone}>
                         Configure Components
                         <CheckIcon className={classes.iconR} />
@@ -207,7 +224,7 @@ class ConfigureStore extends React.Component<ConfigureStoreProps, ConfigureStore
                         <ClearIcon className={classes.icon} />
                         Discard
                     </Button>
-                </div>
+                </div> */}
             </div>
 
         );
